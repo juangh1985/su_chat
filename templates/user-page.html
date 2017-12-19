@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<!-- Para darle foco directo al input del chat -->
+<script type="text/javascript">
+	window.onload= function(){
+		document.formulario.id_chat.focus()
+	}
+</script>
+
+
+<!-- Estilo al medidor de tiempo de la pagina -->
+<style>
+	#time {
+		font-size:12px;
+		color:#000000;
+	}
+</style>
+
+
+
+
+<div id="main">
+	<div class="container">
+
+	<!-- Usuario principal -->
+		<div class="row">
+			<div class="col-sm-12">
+				<h1>Usuario: <strong>{{user.first_name}} {{user.last_name}}</strong></h1>
+			</div>
+		</div>
+
+	<!-- Usuario con quien se va a chatear -->
+		<div class="row">
+			<div class="col-sm-12">
+				<h1>Chateando con: <strong>{{addressee.first_name}} {{addressee.last_name}}</strong></h1>
+			</div>
+		</div>
+
+	<br>
+	<!-- Boton para regresar a los vinculos -->
+	<a href="/connections/{{user.id}}" class="btn btn-danger" title="Regresar a grupo de vinculos." ><i class="fa fa-reply-all" aria-hidden="true"></i> Regresar</a>
+
+	<br>
+	<br>
+
+
+
+
+	<div class="row">
+	<!-- Zona de mensajes -->
+		<div class="col-sm-6">
+			<div class="card ">
+			<div class="card-header">Sala de Chat</div>
+			<div class="card-body">
+				{%for c in conversations%}
+					{%if c.sender.id == user.id%}
+						<p class="text-right text-primary">{{c.addressee}}:  {{c.chat}} <small>({{c.registered|date:"d/m/Y H:i"}})</small></p>
+					{%else%}
+						<p class="text-left text-danger"><strong>{{c.addressee}}:  {{c.chat}}</strong> <small>({{c.registered|date:"d/m/Y H:i"}})</small></p><br>
+					{%endif%}
+				{%endfor%}
+			</div>
+			</div>
+		</div>
+	<!-- Zona para input de texto para escribir los mensajes, boton de enviar, de limpiar y el contador de tiempo -->
+		<div class="col-sm-4">
+			<form name="formulario" enctype="multipart/form-data" action="" method="post" >{% csrf_token %}
+				{{form_chat}}
+				<br>
+				<button title="Enviar mensaje."  type="submit" class="btn btn-primary" ><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Enviar</button>
+				<button title="Limpiar y actualizar chat." type="button"  class="btn btn-primary" onclick="javascript:window.location.reload();" ><i class="fa fa-refresh" aria-hidden="true"></i></button>
+			</form>
+		</div>
+		
+		<div class="col-sm-2">
+			Tiempo sin actividad:
+		<div id="time"></div>
+		</div>
+
+	</div>
+
+	</div>
+</div>
+
+<!-- Script para contar los segundos pasados desde la ultima actualizacion -->
+
+<script>
+var n = 0;
+var l = document.getElementById("time");
+window.setInterval(function(){
+  l.innerHTML = n;
+  n++;
+},1000);
+</script>
+{%endblock main%}

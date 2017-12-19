@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<div id="main">
+<div class="container">
+<!-- Usuario seleccionado como principal -->
+<div class="row">
+	<div class="col-sm-12">
+		<h1>Usuario: <strong>{{user.first_name}} {{user.last_name}}</strong></h1>
+	</div>
+</div>
+
+<br>
+
+<!-- Zona de mensajes de alerta. Se carga desde el views de la aplicacion -->
+{%if message%}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <strong>Atencion!</strong> {{message}}
+</div>
+{%endif%}
+
+<br>
+
+
+<!-- Boton de regreso -->
+<div class="row">
+	<div class="col-sm-6">
+		<a href="/" class="btn btn-danger" title="Regresar al grupo de usuarios." ><i class="fa fa-reply-all" aria-hidden="true"></i> Regresar</a>
+	</div>
+</div>
+<br>
+<br>
+<div class="row">
+<!-- Se muestra el total de usuarios y un formulario para solicitar el vinculo con el usuario en cuestion. -->
+	<div class="col-sm-6">
+		<h3>total de usuarios</h3>
+			{%for u in allusers%}
+				<form enctype="multipart/form-data" action="" method="post" >{% csrf_token %}
+					{{u}}
+					<input type="hidden" name="addressee" value="{{u.id}}">
+						<button type="submit" class="btn btn-primary btn-sm" title="Enviar solicitud de vinculo a '{{u}}'." >
+							<i class="fa fa-link"></i>
+						</button>
+				</form>
+			{%endfor%}
+	</div>
+
+<!-- Usuarios con los que ya se tiene un vinculo. Listo para enviar mensajes y chatear -->
+	<div class="col-sm-6">
+		<h3>usuarios conectados</h3>
+		{%for c in connections%}
+			{{c.addressee}}
+			<a href="/chat/{{user.id}}/{{c.addressee.id}}/" class="btn btn-success btn-sm" title="Chatear con '{{c.addressee}}'." >
+				<i class="fa fa-wechat"></i>
+			</a><br>
+		{%endfor%}
+	</div>
+
+</div>
+
+</div>
+</div>
+
+{%endblock main%}

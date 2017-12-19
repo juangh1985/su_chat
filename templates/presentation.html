@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block main %}
+
+
+<div id="main">
+<div class="container">
+
+<div class="row">
+	<div class="col-sm-12">
+		<h1>Lista de usuarios disponibles</h1>
+	</div>
+</div>
+
+<br>
+<!-- Listado de todos los usuarios disponibles dentro del auth_admin -->
+<div class="row">
+	<div class="col-sm-12">
+		{%for u in users%} 
+			{{u.first_name}} {{u.last_name}} <a class="btn btn-primary" href="/connections/{{u.id}}" target="blank"  title="Ver enlaces."><i class="fa fa-address-book-o fa-lg" aria-hidden="true"></i> {{u.username}}</a><br>
+		{%endfor%}
+	</div>
+</div>
+
+
+</div>
+</div>
+
+{%endblock main%}
