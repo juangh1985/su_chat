@@ -15,6 +15,6 @@ all the code is comment
 
 I hope you like it!
 
-You can enjoy it here:
+You can enjoy it last update here:
 
 http://chat.sirvaseusted.es/
